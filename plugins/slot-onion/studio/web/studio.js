@@ -144,9 +144,11 @@ const baseDeep = (c) => lookOf(c)?.ground ?? Array.from(stopsOf(c)).slice(0, 3);
 const hex = (rgb) => `#${[...rgb].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
 // A checksum as the set names its files: eight upper case hex digits.
 const crcHex = (crc) => crc.toString(16).toUpperCase().padStart(8, '0');
-// Our own set, published beside the studio. `?art=` points at another, a local one while it is
-// being harvested, and an empty `?art=` leaves every cart to libretro.
-const ART_BASE = new URLSearchParams(location.search).get('art') ?? 'https://art.slot-cfw.fyi/';
+// The shared art host does not grant browser access from GitHub Pages. Use Libretro's public
+// thumbnails there by default; `?art=` can opt into a CORS-enabled catalog, and other Studio hosts
+// retain the shared Slot catalog default.
+const DEFAULT_ART_BASE = location.hostname === 'jarodwr.github.io' ? '' : 'https://art.slot-cfw.fyi/';
+const ART_BASE = new URLSearchParams(location.search).get('art') ?? DEFAULT_ART_BASE;
 let artIndex = null;
 const fromHex = (value) => [1, 3, 5].map((at) => parseInt(value.slice(at, at + 2), 16));
 // A sure look from the art set, or null: anything missing, unsure or malformed counts as no look.
