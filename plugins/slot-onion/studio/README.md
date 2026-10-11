@@ -1,8 +1,8 @@
 # Slot Cart Studio for Onion
 
 Cart labels for Onion SD cards, previewed on the same GB, GBC and GBA cartridge faces Slot-Onion
-draws. The hosted build is published at
-[onionui.github.io/slot-studio](https://onionui.github.io/slot-studio/).
+draws. The Jarodwr fork publishes the Studio at
+[jarodwr.github.io/Onion/slot-studio](https://jarodwr.github.io/Onion/slot-studio/).
 
 Choose the root of the Onion SD card. Studio reads each supported system's `Emu/<system>/config.json`
 and follows its `rompath` into `Roms/`; it writes labels into `Labels/<system>/` and shell choices

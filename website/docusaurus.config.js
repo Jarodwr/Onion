@@ -10,6 +10,9 @@ const remarkPingOpts = {
   userURL: (username) => `https://github.com/${username}`
 }
 
+const isJarodwrFork = process.env.GITHUB_REPOSITORY === 'Jarodwr/Onion';
+const siteBaseUrl = isJarodwrFork ? '/Onion/' : '/';
+
 const oembed = require('remark-oembed');
 const oembedOpts = {
   syncWidget: true
@@ -23,15 +26,15 @@ const config = {
   trailingSlash: false,
 
   // Set the production url of your site here
-  url: 'https://onionui.github.io',
+  url: isJarodwrFork ? 'https://jarodwr.github.io' : 'https://onionui.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: siteBaseUrl,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'OnionUI', // Usually your GitHub org/user name.
-  projectName: 'onionui.github.io', // Usually your repo name.
+  organizationName: isJarodwrFork ? 'Jarodwr' : 'OnionUI', // Usually your GitHub org/user name.
+  projectName: isJarodwrFork ? 'Onion' : 'onionui.github.io', // Usually your repo name.
   deploymentBranch: 'main',
 
   onBrokenLinks: 'throw',
@@ -110,7 +113,7 @@ const config = {
             label: 'Docs',
           },
           { to: '/blog', label: 'Blog', position: 'left' },
-          { href: '/slot-studio/', label: 'Cart Studio', position: 'left' },
+          { href: `${siteBaseUrl}slot-studio/`, label: 'Cart Studio', position: 'left' },
           {
             href: 'https://github.com/OnionUI/Ports-Collection/blob/main/README.md',
             label: 'Ports',

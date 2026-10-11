@@ -11,6 +11,7 @@ on:
 
 jobs:
   deploy:
+    if: github.repository == 'OnionUI/Onion'
     runs-on: ubuntu-latest
     defaults:
       run:
