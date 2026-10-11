@@ -1,0 +1,5 @@
+.git
+.cargo
+target
+sim/testcard
+sim/tmp

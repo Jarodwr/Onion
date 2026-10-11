@@ -1,0 +1,24 @@
+[tools]
+rust = "1.98.1"
+node = "18"
+
+[tasks.slot-onion-build]
+description = "Build Slot-Onion for desktop"
+run = "cargo build --manifest-path plugins/slot-onion/Cargo.toml"
+
+[tasks.slot-onion-device]
+description = "Cross-compile Slot-Onion for the Miyoo Mini toolchain"
+run = "plugins/slot-onion/scripts/build-miyoo.sh"
+
+[tasks.studio-build]
+description = "Build Cart Studio's WebAssembly renderer"
+run = "cd plugins/slot-onion/studio && (command -v wasm-pack >/dev/null || cargo install wasm-pack --version 0.15.0 --locked) && wasm-pack build --release --target web --no-typescript --out-dir web/pkg"
+
+[tasks.studio-serve]
+description = "Build Cart Studio and serve it locally"
+depends = ["studio-build"]
+run = "python3 -m http.server 8765 --bind 127.0.0.1 --directory plugins/slot-onion/studio/web"
+
+[tasks.website-build]
+description = "Build the Onion documentation website"
+run = "mise run studio-build && mkdir -p website/static/slot-studio && cp -R plugins/slot-onion/studio/web/. website/static/slot-studio/ && cd website && yarn install --frozen-lockfile && yarn build"

@@ -3,6 +3,7 @@
 
 # Production
 /build
+/static/slot-studio
 
 # Generated files
 .docusaurus

@@ -110,6 +110,7 @@ const config = {
             label: 'Docs',
           },
           { to: '/blog', label: 'Blog', position: 'left' },
+          { href: '/slot-studio/', label: 'Cart Studio', position: 'left' },
           {
             href: 'https://github.com/OnionUI/Ports-Collection/blob/main/README.md',
             label: 'Ports',

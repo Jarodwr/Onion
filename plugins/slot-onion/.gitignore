@@ -1,0 +1,4 @@
+target/
+package/.tmp_update/bin/slot-onion
+sim/tmp/
+sim/testcard/

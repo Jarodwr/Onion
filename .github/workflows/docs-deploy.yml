@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'website/**/*'
+      - 'plugins/slot-onion/studio/**/*'
+      - 'plugins/slot-onion/slot/**/*'
   workflow_dispatch:
 
 jobs:
@@ -20,6 +22,21 @@ jobs:
           node-version: 18
           cache: yarn
           cache-dependency-path: '**/yarn.lock'
+      - name: Rust with the wasm32 target
+        run: rustup toolchain install 1.98.1 --profile minimal --target wasm32-unknown-unknown
+      - name: wasm-pack 0.15.0
+        run: |
+          set -eu
+          curl -fsSL https://github.com/rustwasm/wasm-pack/releases/download/v0.15.0/wasm-pack-v0.15.0-x86_64-unknown-linux-musl.tar.gz \
+            | tar -xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/wasm-pack-v0.15.0-x86_64-unknown-linux-musl" >> "$GITHUB_PATH"
+      - name: Build Cart Studio for Onion's Pages site
+        working-directory: plugins/slot-onion/studio
+        run: |
+          wasm-pack build --release --target web --no-typescript --out-dir web/pkg
+          sed -i "s/^const BUILD = 'dev';\$/const BUILD = '$GITHUB_SHA';/" web/studio.js
+          mkdir -p ../../../website/static/slot-studio
+          cp -R web/. ../../../website/static/slot-studio/
       - uses: webfactory/ssh-agent@v0.5.0
         with:
           ssh-private-key: ${{ secrets.GH_PAGES_DEPLOY }}

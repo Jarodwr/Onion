@@ -1,0 +1,40 @@
+[package]
+name = "slot-onion"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-3.0-or-later"
+description = "slot's cart shelf frontend for Onion OS"
+
+[dependencies]
+slot-ui = { path = "upstream-slot/crates/slot-ui" }
+slot-store = { path = "upstream-slot/crates/slot-store" }
+slot-gfx = { path = "upstream-slot/crates/slot-gfx", default-features = false }
+slot = { path = "upstream-slot/crates/slot", default-features = false, optional = true }
+serde_json = "1"
+png = "0.17"
+minifb = { version = "0.27", optional = true }
+libc = { version = "0.2", optional = true }
+
+[build-dependencies]
+cc = "1"
+
+[features]
+default = ["host"]
+# Desktop window for development; the device build drives /dev/fb0 instead.
+host = ["dep:minifb", "dep:slot", "slot/host"]
+device = ["dep:libc"]
+
+[[bin]]
+name = "slot-onion"
+path = "src/main.rs"
+required-features = ["host"]
+
+[[bin]]
+name = "fake-game"
+path = "src/bin/fake_game.rs"
+required-features = ["host"]
+
+[[bin]]
+name = "slot-onion-device"
+path = "src/device.rs"
+required-features = ["device"]

@@ -1,0 +1,11 @@
+FROM --platform=linux/amd64 aemiii91/miyoomini-toolchain:latest
+
+USER root
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+    | sh -s -- -y --profile minimal --default-toolchain 1.98.1 \
+      --target armv7-unknown-linux-gnueabihf
+ENV PATH="/root/.cargo/bin:${PATH}"
+WORKDIR /work/slot-onion
