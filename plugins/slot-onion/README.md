@@ -14,8 +14,8 @@ Both include their upstream license files.
 
 From the Onion repository root, `mise run slot-onion-build` builds the desktop plugin,
 `mise run slot-onion-device` cross-compiles the Miyoo binary, and `mise run studio-build` builds
-Cart Studio's web renderer. The Jarodwr fork Pages workflow publishes it at
-`https://jarodwr.github.io/Onion/slot-studio/` alongside the documentation site.
+Cart Studio's web renderer. The Jarodwr fork Pages workflow publishes the Studio at
+`https://jarodwr.github.io/Onion/slot-studio/`.
 
 ## Desktop development
 

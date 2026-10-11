@@ -24,10 +24,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
       - name: Rust with the wasm32 target
         run: rustup toolchain install 1.98.1 --profile minimal --target wasm32-unknown-unknown
 
@@ -43,22 +39,22 @@ jobs:
         run: |
           wasm-pack build --release --target web --no-typescript --out-dir web/pkg
           sed -i "s/^const BUILD = 'dev';\$/const BUILD = '$GITHUB_SHA';/" web/studio.js
-          mkdir -p ../../../website/static/slot-studio
-          cp -R web/. ../../../website/static/slot-studio/
+          mkdir -p ../../../pages/slot-studio
+          cp -R web/. ../../../pages/slot-studio/
+          cat > ../../../pages/index.html <<'HTML'
+          <!doctype html>
+          <html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>Onion Cart Studio</title>
+          <meta http-equiv="refresh" content="0; url=slot-studio/">
+          <p><a href="slot-studio/">Open Cart Studio</a></p>
+          </html>
+          HTML
 
       - uses: actions/configure-pages@v5
 
-      - name: Build the fork website
-        working-directory: website
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
-        run: |
-          yarn install --frozen-lockfile
-          yarn build
-
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: website/build
+          path: pages
 
       - id: deploy
         uses: actions/deploy-pages@v4
