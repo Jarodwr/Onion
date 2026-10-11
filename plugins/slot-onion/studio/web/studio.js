@@ -1092,10 +1092,6 @@ async function start() {
       banner(`The art set at ${ART_BASE} didn’t load (${e.message}), so carts get slot’s own labels.`);
     }
   }
-  const direct = 'showDirectoryPicker' in window;
-  $('pick').hidden = !direct;
-  $('pick-files-label').hidden = direct;
-
   $('pick').addEventListener('click', async () => {
     let root;
     try {
@@ -1182,4 +1178,22 @@ $('build').append(
         textContent: BUILD.slice(0, 7),
       }),
 );
-start();
+const directPicker = 'showDirectoryPicker' in window;
+$('pick').hidden = !directPicker;
+$('pick-files-label').hidden = directPicker;
+$('pick').disabled = directPicker;
+$('pick-files').disabled = true;
+$('pick-files-label').classList.add('is-disabled');
+$('pick-files-label').setAttribute('aria-disabled', 'true');
+
+start().then(() => {
+  $('studio-status').hidden = true;
+  $('pick').disabled = false;
+  $('pick-files').disabled = false;
+  $('pick-files-label').classList.remove('is-disabled');
+  $('pick-files-label').removeAttribute('aria-disabled');
+}).catch((e) => {
+  console.error('Cart Studio startup failed', e);
+  $('studio-status').textContent = 'Cart Studio failed to start';
+  banner(`Cart Studio couldn’t start: ${e?.message ?? e}`);
+});
